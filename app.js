@@ -55,7 +55,7 @@ appClient.on("connect", function() {
     console.log("Waiting " + wait_time + " seconds to be sure no old runs interfer with usage reporting");
     setTimeout(function(){
       calculatorIteration(iteration_sets);
-    },wait_time);
+    },wait_time*1000);
 });
 /**
  */
@@ -99,7 +99,7 @@ function calculatorIteration(iteration_sets){
         publishMessages(iteration_set.sending_time,old_data_usage,start,iteration_set,iteration_sets,function(data){
           setTimeout(function(){
             createAndStoreIterationInfo(data,iteration_sets,calculatorIteration);
-          },wait_time);
+          },wait_time*1000);
         });
       });
     });
@@ -137,7 +137,7 @@ function createAndStoreIterationInfo(data,iteration_sets,callback){
       }
     });
     });
-  },wait_time);
+  },wait_time*1000);
 }
 
 /**
