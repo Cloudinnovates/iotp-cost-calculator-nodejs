@@ -1,0 +1,28 @@
+{
+  "name": "iotp-cost-calculator",
+  "version": "1.0.0",
+  "description": "An application used to determine how to best predict IBM Watson IoT Platform usage given an existing JSON sample string.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "6.9.2",
+    "npm": "3.10.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.ng.bluemix.net/eifinger/iotp-cost-calculator"
+  },
+  "author": "Kevin Eifinger",
+  "license": "ISC",
+  "dependencies": {
+    "cfenv": "^1.0.4",
+    "sleep": "^5.1.1",
+    "cloudant": "^1.8.0",
+    "ibmiotf": "^0.2.10",
+    "json-size": "1.0.0",
+    "uuid": "^3.0.1"
+  }
+}
