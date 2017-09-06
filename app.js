@@ -57,11 +57,6 @@ appClient.on("connect", function() {
       calculatorIteration(iteration_sets);
     },wait_time);
 });
-
-function generateIterationSets(callback){
-
-}
-
 /**
  */
 function publishMessages(sending_time,old_data_usage,start,iteration_set,iteration_sets,callback){
@@ -115,7 +110,9 @@ function calculatorIteration(iteration_sets){
 }
 
 function createAndStoreIterationInfo(data,iteration_sets,callback){
-  appClient.getDataUsage(start_date, new Date().toISOString().replace(/T.+/, '')).then(function(newData) {
+  console.log("Waiting " + wait_time + " to get data usage.");
+  setTimeout(function(){
+    appClient.getDataUsage(start_date, new Date().toISOString().replace(/T.+/, '')).then(function(newData) {
     let doc_id = wait_time + "_" + data.iteration_set.qos + "_" + data.iteration_set.sending_time + "_" + data.iteration_set.actual_size;
     let information = {"_id": doc_id,
     "storage_datetime": new Date().toISOString().replace(/T.+/, ''),
@@ -140,6 +137,7 @@ function createAndStoreIterationInfo(data,iteration_sets,callback){
       }
     });
     });
+  },wait_time);
 }
 
 /**

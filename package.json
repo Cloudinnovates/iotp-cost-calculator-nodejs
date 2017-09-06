@@ -13,13 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.ng.bluemix.net/eifinger/iotp-cost-calculator"
+    "url": "https://github.com/eifinger/iotp-cost-calculator-nodejs"
   },
   "author": "Kevin Eifinger",
-  "license": "ISC",
+  "license": "GPLv3",
   "dependencies": {
     "cfenv": "^1.0.4",
-    "sleep": "^5.1.1",
     "cloudant": "^1.8.0",
     "ibmiotf": "^0.2.10",
     "json-size": "1.0.0",
