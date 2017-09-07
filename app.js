@@ -115,7 +115,7 @@ function createAndStoreIterationInfo(data,iteration_sets,callback){
     appClient.getDataUsage(start_date, new Date().toISOString().replace(/T.+/, '')).then(function(newData) {
     let doc_id = wait_time + "_" + data.iteration_set.qos + "_" + data.iteration_set.sending_time + "_" + data.iteration_set.actual_size;
     let information = {"_id": doc_id,
-    "storage_datetime": new Date().toISOString().replace(/T.+/, ''),
+    "storage_datetime": new Date().toISOString(),
     "storage_timestamp": Date.now(),
     "old_data_usage": data.old_data_usage,
     "reported_data_usage": newData.total,
@@ -127,8 +127,8 @@ function createAndStoreIterationInfo(data,iteration_sets,callback){
     "time_took": data.time_took,
     "version": version};
     console.log(information);
-    console.log("Storing data under id " + doc_id);
-    storage.insert(data, doc_id, function(err, body) {
+    console.log("Storing information under id " + doc_id);
+    storage.insert(information, doc_id, function(err, body) {
       if (!err){
         console.log("Successfully stored information:\n" + JSON.stringify(body));
         if(callback){
