@@ -32,7 +32,7 @@ appClient.on("error", function(err) {
 
 appClient.on("connect", function() {
   console.log("Appclient connected");
-  let qos_levels = [0, 1, 2];
+  let qos_levels = [0,1,2];
   let sending_times = [10, 100, 1000, 10000, 100000, 1000000];
   let iteration_sets = [];
   let iteration_set;
@@ -60,13 +60,22 @@ appClient.on("connect", function() {
 /**
  */
 function publishMessages(sending_time,old_data_usage,start,iteration_set,iteration_sets,callback){
-  if(sending_time > 0){
-    sending_time = sending_time-1;
-    appClient.publishDeviceEvent(device_type,device_id, event_type, "json", JSON.stringify(iteration_set.payload), iteration_set.qos);
-    setTimeout(function(){
-      publishMessages(sending_time,old_data_usage,start,iteration_set,iteration_sets,callback);
-    },0);
-    } else {
+  var publishCounter = 0;
+  let i = 0;
+  while(i < sending_time){
+    appClient.publishDeviceEvent(device_type,device_id, event_type, "json", JSON.stringify(iteration_set.payload), iteration_set.qos, function(err){
+      publishCounter++;
+      if(err){
+        console.log(err);
+      }
+      console.log("Publish counter: " + publishCounter);
+    });
+    i++;
+    console.log("i: " + i);
+  }
+  while(publishCounter != sending_time){
+    console.log("Publish counter: " + publishCounter);
+  }
     let end = Date.now();
     console.log("Finished sending messages");
     let time_took = (end - start)/1000;
@@ -78,7 +87,6 @@ function publishMessages(sending_time,old_data_usage,start,iteration_set,iterati
       data.old_data_usage = old_data_usage;
       callback(data);
     }
-  }
 }
 
 function calculatorIteration(iteration_sets){
