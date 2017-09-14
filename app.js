@@ -62,7 +62,7 @@ appClient.on("connect", function() {
 function publishMessages(sending_time,old_data_usage,start,iteration_set,iteration_sets,callback){
   if(sending_time > 0){
     sending_time = sending_time-1;
-    appClient.publishDeviceEvent(device_type,device_id, event_type, "json", JSON.stringify(iteration_set.payload));
+    appClient.publishDeviceEvent(device_type,device_id, event_type, "json", JSON.stringify(iteration_set.payload), iteration_set.qos);
     setTimeout(function(){
       publishMessages(sending_time,old_data_usage,start,iteration_set,iteration_sets,callback);
     },0);
