@@ -32,7 +32,7 @@ appClient.on("error", function(err) {
 
 appClient.on("connect", function() {
   console.log("Appclient connected");
-  let qos_levels = [0,1,2];
+  let qos_levels = [0, 1, 2];
   let sending_times = [10, 100, 1000, 10000, 100000, 1000000];
   let iteration_sets = [];
   let iteration_set;
@@ -60,22 +60,12 @@ appClient.on("connect", function() {
 /**
  */
 function publishMessages(sending_time,old_data_usage,start,iteration_set,iteration_sets,callback){
-  var publishCounter = 0;
-  let i = 0;
-  while(i < sending_time){
-    appClient.publishDeviceEvent(device_type,device_id, event_type, "json", JSON.stringify(iteration_set.payload), iteration_set.qos, function(err){
-      publishCounter++;
-      if(err){
-        console.log(err);
-      }
-      console.log("Publish counter: " + publishCounter);
+  if(sending_time > 0){
+    sending_time = sending_time-1;
+    appClient.publishDeviceEvent(device_type,device_id, event_type, "json", JSON.stringify(iteration_set.payload), iteration_set.qos, () => {
+      publishMessages(sending_time,old_data_usage,start,iteration_set,iteration_sets,callback);
     });
-    i++;
-    console.log("i: " + i);
-  }
-  while(publishCounter != sending_time){
-    console.log("Publish counter: " + publishCounter);
-  }
+    } else {
     let end = Date.now();
     console.log("Finished sending messages");
     let time_took = (end - start)/1000;
@@ -87,6 +77,7 @@ function publishMessages(sending_time,old_data_usage,start,iteration_set,iterati
       data.old_data_usage = old_data_usage;
       callback(data);
     }
+  }
 }
 
 function calculatorIteration(iteration_sets){
@@ -139,6 +130,11 @@ function createAndStoreIterationInfo(data,iteration_sets,callback){
     storage.insert(information, doc_id, function(err, body) {
       if (!err){
         console.log("Successfully stored information:\n" + JSON.stringify(body));
+        if(callback){
+          callback(iteration_sets);
+        }
+      } else {
+        console.log("Doc already exists");
         if(callback){
           callback(iteration_sets);
         }
